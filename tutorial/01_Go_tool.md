@@ -7,4 +7,3 @@
 - go list : list all installed packages
 - go run : compile and run the excecutable
 - go test : runs tests in the `_test.go` file
-- 

@@ -2,7 +2,7 @@
 
 ### Scan Function
 ```go
-_, err := fmt.Scan(&n) //number of items scanned and error
+_, err := fmt.Scan(&n) //returns number of items scanned and error
 
 ```
 
