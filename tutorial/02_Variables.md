@@ -1,3 +1,5 @@
+## 2. Variables
+
 ![image](https://github.com/aswinbennyofficial/Golang/assets/110408942/0b9ec672-dd5f-4a0f-8961-a2ed24da7853)
 
 ### Declare variables

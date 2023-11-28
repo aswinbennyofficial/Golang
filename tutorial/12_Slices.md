@@ -1,3 +1,5 @@
+## 12. Slices
+
 - Window of an underlying array
 - Size is variable upto the length of underlying array
 - **Pointer** : indicates start of the slice

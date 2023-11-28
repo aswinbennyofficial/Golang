@@ -1,3 +1,5 @@
+## 3. Alias
+
 
 - Gives alternate name for the variable type
 ### Declare

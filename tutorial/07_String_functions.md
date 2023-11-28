@@ -1,3 +1,4 @@
+## 7. String functions
 
 ### strings package
 ```go

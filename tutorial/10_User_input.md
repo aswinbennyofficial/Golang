@@ -1,3 +1,5 @@
+## 10. User input
+
 ### Scan Function
 ```go
 _, err := fmt.Scan(&n) //number of items scanned and error

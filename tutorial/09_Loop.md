@@ -1,3 +1,5 @@
+## 9. Loops
+
 ### For Loop
 ```go
 for i:=0;i<10;i++{

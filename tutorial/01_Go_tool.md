@@ -1,3 +1,5 @@
+## 1. Go tool
+
 - go build : compiles the program
 - go doc : prints documentation for the package
 - go fmt : format source code files
