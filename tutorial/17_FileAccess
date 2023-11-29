@@ -29,6 +29,22 @@ func main() {
   }
 ```
 
+- read line by line
+```go
+// import bufio and os
+
+fd, err := os.Open("readme.txt")
+
+defer fd.Close()
+
+scanner := bufio.NewScanner(fd)
+
+for scanner.Scan() {
+	str := scanner.Text()
+}
+```
+
+
 
 ### Writing
 ```go
