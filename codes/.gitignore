@@ -22,3 +22,5 @@ go.work
 
 # Waste file
 test.go
+readme.txt
+gowrite.txt
