@@ -14,6 +14,10 @@
 ```bash
 sudo dnf install awscli -y
 ```
+- or it can be installed on below method
+```bash
+pip install awscli
+```
 - Configure the awscli using command
 ```bash
 aws configure
@@ -28,5 +32,5 @@ aws configure
 
 ### Pushing 
 - Open the repo on the ECR in aws console
-- Click on 'view push commands' button
+- Click on `view push commands` button
 - follow the commands 
