@@ -21,7 +21,8 @@ type SubmissionData struct {
 }
 
 func handleLeetcode(w http.ResponseWriter, r *http.Request) {
-	url := "https://leetcode-api-faisalshohag.vercel.app/aswinbenny" // Replace with your actual API endpoint
+
+	url := "https://leetcode-api-faisalshohag.vercel.app"+r.URL.Path // Replace with your actual API endpoint
 
 	response, err := http.Get(url)
 	if err != nil {
@@ -63,6 +64,7 @@ func handleLeetcode(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 	http.HandleFunc("/", handleLeetcode)
+	// example localhost:8080/aswinbenny
 
 	fmt.Println("Server is listening on :8080...")
 	http.ListenAndServe(":8080", nil)

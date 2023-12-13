@@ -8,7 +8,7 @@ import (
 
 // GitHubUser represents the structure of the GitHub user data we want to fetch and return as JSON.
 type GitHubUser struct {
-	Name    string    `json:"name"`
+	Name   string `json:"name"`
 	Userid string `json:"login"`
 }
 
@@ -58,7 +58,8 @@ func handleGithub(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
 	// Write the JSON response to the client
-	w.Write(responseJSON)
+	//w.Write(responseJSON)
+	fmt.Fprintf(w,string(responseJSON))
 }
 
 func main() {
