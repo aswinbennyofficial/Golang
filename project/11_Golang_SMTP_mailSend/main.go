@@ -31,20 +31,35 @@ func main(){
 
 	// List of emails you want to send the email
 	// toList := []string{"email1@gmail.com","email2@gmail.com","email3@gmail.com"}
-	toList := []string{"aswinbenny.edu@gmail.com"}
+	toList := []string{"reciepient1@gmail.com"}
 
 
 	// mail
-	subject:="Hello guys"
-	body:="This is body"
+	subject:="Test Golang Program"
+	body:="<html><body><h1>Hello, this is an HTML-rich email template!</h1></body></html>"
+	// You can add custom replto email address here
 	reply_to:=""
 
+	if reply_to==""{
+		reply_to=FROM_EMAIL
+	}
+
 	var msg []byte
+	//For basic text
+	// msg = []byte(
+	// 	"Reply-To: "+reply_to+"\r\n"+
+	// 	"Subject: "+subject+"\r\n" +
+	// 	"\r\n" +
+	// 	body+"\r\n")
+
+	//For rich html support
 	msg = []byte(
-		"Reply-To: "+reply_to+"\r\n"+
-		"Subject: "+subject+"\r\n" +
-		"\r\n" +
-		body+"\r\n")
+		"From: "+FROM_EMAIL+"\r\n"+
+		"Reply-To: " + reply_to + "\r\n" +
+			"Subject: " + subject + "\r\n" +
+			"MIME-version: 1.0;\nContent-Type: text/html; charset=\"UTF-8\";\r\n" +
+			"\r\n" +
+			body + "\r\n")
 
 	
 	// send the mail
@@ -56,6 +71,6 @@ func main(){
 		os.Exit(1)
 	}
 	
-	fmt.Println("Successfully sent mail to all user in toList")
+	fmt.Println("Successfully sent mail to all user in the list")
 
 }
