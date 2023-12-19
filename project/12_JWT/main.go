@@ -62,7 +62,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Printf("USERNAME:%s  PASSWORD;%s \n",creds.Username,creds.Password)
+	log.Printf("USERNAME:%s  PASSWORD:%s \n",creds.Username,creds.Password)
 
 	// Check if password is correct
 	if creds.Password==credMap[creds.Username] {
@@ -146,11 +146,86 @@ func homeHandler(w http.ResponseWriter, r *http.Request){
 		return
 	}
 
-
+	log.Println("ACCESS APPROVED TO /home")
 	w.Write([]byte(fmt.Sprintf("Welcome %s!", claims.Username)))
 
 }
 
 func refreshTokenHandler(w http.ResponseWriter, r *http.Request){
-	
+	cookieVar,err:=r.Cookie("JWtoken")
+	if err!=nil{
+		if err!=nil{
+			log.Println("ERROR WHILE OBTAINING COOKIE: ",err)
+			if err == http.ErrNoCookie {
+				// If the cookie is not set, return an unauthorized status
+				w.WriteHeader(http.StatusUnauthorized)
+				return
+			}
+			// For any other type of error, return a bad request status
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+	}
+
+	//Get JWT string from cookie
+	JWTstring:=cookieVar.Value
+
+	// Initialising a new instance of claims
+	claims:=&Claims{}
+
+	// Parse the JWT string and store in claims
+	tokenVar,err:= jwt.ParseWithClaims(JWTstring,claims,func(token *jwt.Token) (any, error){
+		return JWT_SECRET_KEY,nil
+	})
+
+	if err != nil {
+		if err == jwt.ErrSignatureInvalid {
+			log.Println("INVALID SIGNATURE")
+			w.WriteHeader(http.StatusUnauthorized)
+			return
+		}
+		log.Println("ERROR WHILE PARSING JWT WITH CLAIMS: ",err)
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	if !tokenVar.Valid {
+		log.Println("INVALID TOKEN ")
+		w.WriteHeader(http.StatusUnauthorized)
+		return
+	}
+
+
+	// New token is not issued until 30s of expiration time
+	if time.Until(claims.ExpiresAt.Time) > 240*time.Second {
+		log.Println("NEW REFRESH ONLY BEFORE 4 mins OF EXPIRY")
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+
+	// Creating a new token
+
+	// Setting experiation time to be 15 minutes from now
+	expirationTime :=time.Now().Add(5 * time.Minute)
+
+	// Declaring token with header and payload
+	noSignedToken:=jwt.NewWithClaims(jwt.SigningMethodHS256,claims)
+
+	// Create a complete signed JWT
+	signedToken,err:=noSignedToken.SignedString(JWT_SECRET_KEY)
+
+	if err!=nil{
+		log.Println("ERROR OCCURED WHILE CREATING JWT TOKEN: ",err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	http.SetCookie(w,&http.Cookie{
+		Name: "JWtoken",
+		Value: signedToken,
+		Expires: expirationTime,
+	})
+
+	log.Println("TOKEN REFRESH SUCCESSFULL")
+
 }
