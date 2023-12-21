@@ -12,10 +12,11 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-type Review struct{
-	Name string
-	Text string
+type Inspection struct{
+	Business_name string
+	Result string
 }
+
 
 func main(){
 	//load env variables
@@ -49,26 +50,63 @@ func main(){
 	// Create MongoDB collection obj
 	coll:=client.Database(DB_NAME).Collection(DB_COLLECTION_NAME)
 
-	readDB(coll)
+	//readOneDB(coll)
+	readManyDB(coll)
 
 }
 
-func readDB(coll *mongo.Collection){
+func readManyDB(coll *mongo.Collection){
+
 	// Creating filter
-	filter:=bson.D{{"name","Rodrik Cassel"}}
+	filter:=bson.D{{"result","No Violation Issued"}}
+
+	cursor, err := coll.Find(context.TODO(), filter)
+	if err != nil {
+		panic(err)
+	}
+	defer cursor.Close(context.TODO())
+
+	// Create instance of struct
+	var inspectionResults []Inspection
+
+	// Using cursor All
+	if err := cursor.All(context.TODO(), &inspectionResults); err != nil {
+		panic(err)
+	}
+
+	// Using collection next
+	for cursor.Next(context.TODO()) {
+		var inspectionResult Inspection
+		if err := cursor.Decode(&inspectionResult); err != nil {
+			panic(err)
+		}
+		inspectionResults = append(inspectionResults, inspectionResult)
+	}
+	
+
+
+	fmt.Println(inspectionResults)
+
+}
+
+func readOneDB(coll *mongo.Collection){
+	
+
+	// Creating filter
+	filter:=bson.D{{"result","No Violation Issued"}}
 	
 	// Fetching result as BSON
-	var result bson.D
-	err := coll.FindOne(context.TODO(), filter).Decode(&result)
-	if err!=nil{
-		log.Println(err)
-	}
-	fmt.Println(result)
+	// var result bson.D
+	// err := coll.FindOne(context.TODO(), filter).Decode(&result)
+	// if err!=nil{
+	// 	log.Println(err)
+	// }
+	// fmt.Println(result)
 
 	// Unmarshalling BSON into Review struct
-	var reviewInfo Review
-	if err := coll.FindOne(context.TODO(), filter).Decode(&reviewInfo); err != nil {
+	var inspetionInfo Inspection
+	if err := coll.FindOne(context.TODO(), filter).Decode(&inspetionInfo); err != nil {
 		log.Println(err)
 	}
-	fmt.Println(reviewInfo)
+	fmt.Println(inspetionInfo)
 }
