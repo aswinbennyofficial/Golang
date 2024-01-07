@@ -68,3 +68,38 @@ func UpdateManyDocument(coll *mongo.Collection){
 	log.Println(result.ModifiedCount)
 }
 
+func ReplaceADocument(coll *mongo.Collection){
+	filter := bson.D{{"name", "Madame Vo"}}
+	// Creates a new document containing "Name" and "Cuisine" fields
+	replacement := NewRestaurant{Name: "Monsieur Vo", Cuisine: "Asian Fusion"}
+	// Replaces the first document that matches the filter with a new document
+	result, err := coll.ReplaceOne(context.TODO(), filter, replacement)
+	if err != nil {
+		panic(err)
+	}
+
+	log.Println(result.ModifiedCount)
+}
+
+func DeleteADocument(coll *mongo.Collection){
+	filter := bson.D{{"name", "Monsieur Vo"}}
+	// Deletes the first document that has a "title" value of "Twilight"
+	result, err := coll.DeleteOne(context.TODO(), filter)
+	// Prints a message if any errors occur during the operation
+	if err != nil {
+		panic(err)
+	}
+	log.Println(result.DeletedCount)
+}
+
+
+func DeleteManyDocuments(coll *mongo.Collection){
+	//filter := bson.D{{"restaurant_id", bson.D{{"$gt", 40056018}}}}
+	filter := bson.D{{"cuisine", bson.D{{"$eq", "Delicatessen"}}}}
+	// Deletes all documents that have a "runtime" value greater than 800
+	results, err := coll.DeleteMany(context.TODO(), filter)
+	if err != nil {
+		panic(err)
+	}
+	log.Println(results.DeletedCount)
+}

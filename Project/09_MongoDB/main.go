@@ -57,7 +57,15 @@ func main(){
 	// Update many document
 	//UpdateManyDocument(coll)
 
-	
+	// Replace a document
+	//ReplaceADocument(coll)
+
+	// Delete a document
+	//DeleteADocument(coll)
+
+	// Delete many documents
+	DeleteManyDocuments(coll)
+
 
 	// Defer disconnecting from the MongoDB client
 	defer func() {
