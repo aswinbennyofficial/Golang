@@ -35,14 +35,29 @@ func main(){
 	
 	// CRUD operations
 
+	// FIND ops
 	// Read one document
 	//ReadOneInDB(coll)
 
 	// Read multiple document
-	ReadManyInDB(coll)
+	//ReadManyInDB(coll)
 
 
+	// WRITE ops
+	// Insert a document
+	//InsertADocument(coll)
 
+	// Insert multiple documents
+	//InsertManyDocument(coll)
+
+	// Update a document
+	// uid:="659a9b15aaf1d2c2408e0365"
+	// UpdateADocument(coll,uid)
+
+	// Update many document
+	//UpdateManyDocument(coll)
+
+	
 
 	// Defer disconnecting from the MongoDB client
 	defer func() {
